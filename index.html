@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Score Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="https://kit.fontawesome.com/4e327e659e.js" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+  <script type="module" src="./src/saveGame.js"></script>
+  <script type="module" src="./src/loadGamehistory.js" defer></script>
+  <script type="module" src="./src/loadLeaderboard.js" defer></script>
+  <script src="./src/main.js"></script>
+</head>
+<body class="bg-[#181C32] text-white">
+  <div class="w-full px-8 py-6">
+    <!-- Grid -->
+    <div class="grid grid-cols-12 gap-4">
+        <!-- leftside -->
+      <div class="col-span-12 md:col-span-8 bg-[#21213A] border-2 border-[#2B3969] rounded-md p-4">
+        <!-- top -->
+        <h1 class="text-3xl"><i class="fa-solid fa-trophy mr-2" style="color: #FFEA00"></i>Score tracker</h1>
+        <p class="text-[#A1A1A1]">Track your scores here</p>
+
+        <div class="grid grid-cols-2 bg-[#302F4A] p-2 text-center gap-2 rounded-xl my-4">
+            <!-- buttons -->
+          <button id="leaderboard" type="button" class="bg-white text-black py-2 rounded">Leaderboard</button>
+          <button id="gamehistory" type="button" class="text-white py-2 rounded hover:bg-white/10">Game History</button>
+        </div>
+        <table id="leaderboardTable" class="table-auto w-full my-2">
+            <thead>
+              <tr>
+                <th class="text-center w-20">#</th>
+                <th class="text-left w-70">Name</th>
+                <th class="text-left w-40">Games played</th>
+                <th class="text-left w-40">Wins</th>
+              </tr>
+            </thead>
+            <tbody id="leaderboardBody">
+            </tbody>
+          </table>
+
+
+        <table id="gamehistoryTable" class="table-auto w-full my-2 hidden">
+            <thead>
+              <tr>
+                <th class="text-center w-20">ID</th>
+                <th class="text-left w-70">Winner</th>
+                <th class="text-left w-40">Players</th>
+                <th class="text-left w-40">Date</th>
+              </tr>
+            </thead>
+            <tbody id="gameHistoryBody">
+            </tbody>
+          </table>
+        </table>
+      </div>
+      <!-- rightside -->
+      <div class="col-span-12 md:col-span-4 bg-[#21213A] border-2 border-[#2B3969] rounded-md p-4">
+        <h1 class="text-3xl mb-8">Add game</h1>
+        <div class="top">
+            <p class="text-[#A1A1A1] mb-2">Players (check who played)</p>
+          
+            <!-- Player list -->
+            <div id="playersList" class="flex flex-col">
+                <!-- Player 1 -->
+                <div class="flex items-center mb-2">
+                  <input type="checkbox" id="player-maikel" value="Maikel" class="playerCheckbox w-4 h-4">
+                  <label for="player-maikel" class="ms-2 text-sm font-medium text-white">
+                    Maikel 
+                    <input type="radio" name="winner" value="Maikel" class="ml-2" title="Winner">
+                  </label>
+                </div>
+                <!-- Player 2 -->
+                <div class="flex items-center mb-2">
+                  <input type="checkbox" id="player-davey" value="Davey" class="playerCheckbox w-4 h-4">
+                  <label for="player-davey" class="ms-2 text-sm font-medium text-white">
+                    Davey 
+                    <input type="radio" name="winner" value="Davey" class="ml-2" title="Winner">
+                  </label>
+                </div>
+                <!-- Player 3 -->
+                <div class="flex items-center mb-2">
+                  <input type="checkbox" id="player-jada" value="Jada" class="playerCheckbox w-4 h-4">
+                  <label for="player-jada" class="ms-2 text-sm font-medium text-white">
+                    Jada 
+                    <input type="radio" name="winner" value="Jada" class="ml-2" title="Winner">
+                  </label>
+                </div>
+                <!-- Player 4 -->
+                <div class="flex items-center mb-2">
+                  <input type="checkbox" id="player-thiemen" value="Thiemen" class="playerCheckbox w-4 h-4">
+                  <label for="player-thiemen" class="ms-2 text-sm font-medium text-white">
+                    Thiemen 
+                    <input type="radio" name="winner" value="Thiemen" class="ml-2" title="Winner">
+                  </label>
+                </div>
+                <!-- Player 5 -->
+                <div class="flex items-center mb-2">
+                  <input type="checkbox" id="player-joey" value="Joey" class="playerCheckbox w-4 h-4">
+                  <label for="player-joey" class="ms-2 text-sm font-medium text-white">
+                    Joey 
+                    <input type="radio" name="winner" value="Joey" class="ml-2" title="Winner">
+                  </label>
+                </div>
+                <!-- Player 6 -->
+                <div class="flex items-center mb-2">
+                  <input type="checkbox" id="player-cristian" value="Cristian" class="playerCheckbox w-4 h-4">
+                  <label for="player-cristian" class="ms-2 text-sm font-medium text-white">
+                    Cristian 
+                    <input type="radio" name="winner" value="Cristian" class="ml-2" title="Winner">
+                  </label>
+                </div>
+              </div>              
+          
+            <!-- Submit button -->
+            <button id="submitGame" class="mt-4 bg-[#5f5f72] text-white p-2 rounded-md hover:bg-[#5f5f72]/70">Save Game</button>
+          </div>
+          
+        <div>
+        <div class="bottom mt-2">
+            <div>
+                <div>
+                    <!-- Label -->
+                    <label for="score" class="text-white text-xl">Add player</label>
+                    <div class="mt-2 flex items-center space-x-2">
+                        <input id="score" type="text" class="flex-1 p-2 rounded-md bg-[#302f4a]" placeholder="Enter name">
+                        <button type="submit" class="bg-[#5f5f72] text-white p-2 rounded-md w-1/6 hover:bg-[#5f5f72]/70">Add</button>
+                      </div>
+                  </div>
+            </div>
+        </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
